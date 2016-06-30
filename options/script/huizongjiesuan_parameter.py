@@ -6,18 +6,20 @@ import json
 import time
 from datetime import datetime
 
-CURSOR='o_cursor'
-RD='report_date'
-UD='update_date'
-CU='COMMODITYDELIVFEEUNIT'
-HL='HEDGLONGMARGINRATIO'
-HS='HEDGSHORTMARGINRATIO'
+SETTLEMENT='Settlement'
+CR='COMMODITYDELIVERYFEERATION'
+CU='COMMODITYDELIVERYFEEUNIT'
+DR='DISCOUNTRATE'
 IID='INSTRUMENTID'
+LR='LONGMARGINRATIO'
 SP='SETTLEMENTPRICE'
-SL='SPECLONGMARGINRATIO'
-SS='SPECSHORTMARGINRATIO'
-TR='TRADEFEERATIO'
+SR='SHORTMARGINRATIO'
+SL='SPEC_LONGMARGINRATIO'
+SS='SPEC_SHORTMARGINRATIO'
+TR='TRADEFEERATION'
 TU='TRADEFEEUNIT'
+TD='TRADINGDAY'
+UD='UPDATE_DATE'
 TODAY=datetime.today().strftime('%Y%m%d')
 
 def _getOrElse(d,k,e):
@@ -38,14 +40,11 @@ def getDataOnDate(ts):
     while True:
         try:
             time.sleep(3)
-            url=urllib2.urlopen('http://www.shfe.com.cn/data/dailydata/js/js%s.dat'%ts)
+            url=urllib2.urlopen('http://www.shfe.com.cn/data/instrument/Settlement%s.dat'%ts)
             data=url.read()
             js=json.loads(data,parse_float=None,parse_int=None)
-            for ele in js[CURSOR]:
-                tmplist=_getOrElse(ele,[IID,SP,TR,TU,CU,HL,HS,SL,SS],'None')
-                tmplist.append(ts)
-                tmplist.append(js[RD])
-                tmplist.append(js[UD])
+            for ele in js[SETTLEMENT]:
+                tmplist=_getOrElse(ele,[IID,TD,SP,TR,TU,CU,LR,SR,SL,SS,DR,UD],'None')
                 tmplist.append(TODAY)
                 alldata.append(tmplist)
             break
