@@ -16,13 +16,14 @@ def getDataOnDate(ts):
 		time.sleep(3)
 		try:
 			if ts>=IMPORTANT:
-				print 'http://www.czce.com.cn/portal/DFSStaticFiles/Future/%s/%s/FutureDataClearParams.htm'%(ts[:4],ts)
-				url=urllib2.urlopen('http://www.czce.com.cn/portal/DFSStaticFiles/Future/%s/%s/FutureDataClearParams.htm'%(ts[:4],ts))
+				print 'http://www.czce.com.cn/portal/DFSStaticFiles/Future/%s/%s/FutureDataClearParams.htm?'%(ts[:4],ts)
+				url=urllib2.urlopen(urllib2.Request('http://www.czce.com.cn/portal/DFSStaticFiles/Future/%s/%s/FutureDataClearParams.htm'%(ts[:4],ts)))
 			else:
 				print 'http://www.czce.com.cn/portal/exchange/%s/dataclearparams/%s.htm'%(ts[:4],ts)
 				url=urllib2.urlopen('http://www.czce.com.cn/portal/exchange/%s/dataclearparams/%s.htm'%(ts[:4],ts))
 			data=url.read()
 			soup=BeautifulSoup(data,from_encoding='utf-8')
+                        return soup
 			for i,prod in enumerate(soup.find('table').find('table').find_all('tr')):
 				#skip first name line
 				if i>0:
