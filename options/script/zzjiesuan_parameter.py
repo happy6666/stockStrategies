@@ -7,7 +7,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 
 TODAY=datetime.today().strftime('%Y%m%d')
-IMPORTANT='20101008'
+IMPORTANT='20151008'
 
 def getDataOnDate(ts):
 	t=0;
@@ -16,22 +16,32 @@ def getDataOnDate(ts):
 		time.sleep(3)
 		try:
 			if ts>=IMPORTANT:
-				print 'http://www.czce.com.cn/portal/DFSStaticFiles/Future/%s/%s/FutureDataClearParams.htm?'%(ts[:4],ts)
-				url=urllib2.urlopen(urllib2.Request('http://www.czce.com.cn/portal/DFSStaticFiles/Future/%s/%s/FutureDataClearParams.htm'%(ts[:4],ts)))
+				req=urllib2.Request('http://www.czce.com.cn/portal/DFSStaticFiles/Future/%s/%s/FutureDataClearParams.htm'%(ts[:4],ts))
+				req.add_header('user-agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36')
+				url=urllib2.urlopen(req)
 			else:
-				print 'http://www.czce.com.cn/portal/exchange/%s/dataclearparams/%s.htm'%(ts[:4],ts)
-				url=urllib2.urlopen('http://www.czce.com.cn/portal/exchange/%s/dataclearparams/%s.htm'%(ts[:4],ts))
+				req=urllib2.Request('http://www.czce.com.cn/portal/exchange/%s/dataclearparams/%s.htm'%(ts[:4],ts))
+				req.add_header('user-agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36')
+				url=urllib2.urlopen(req)
 			data=url.read()
 			soup=BeautifulSoup(data,from_encoding='utf-8')
-                        return soup
-			for i,prod in enumerate(soup.find('table').find('table').find_all('tr')):
+			if ts>=IMPORTANT:
+				page=soup.find('table').find('table').find_all('tr')
+			else:
+				page=soup.find_all('table')[3].find_all('tr')
+			for i,prod in enumerate(page):
 				#skip first name line
 				if i>0:
 					tmplist=[('%s'%(col.text)).encode('utf8') for col in prod.find_all('td')]
+					if len(tmplist)<2:
+						continue
 					if len(tmplist)<9:
 						tmplist.append('None')
 						tmplist.append('None')
 						tmplist.append('None')
+					if not len(tmplist)==9:
+						print 'Error on date:%s'%ts
+						continue
 					tmplist.append(ts)
 					tmplist.append(TODAY)
 					alldata.append(tmplist)
