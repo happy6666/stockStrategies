@@ -20,7 +20,7 @@ def getDataOnDate(ts):
 			for i,prod in enumerate(soup.find('table').find('table').find_all('tr')):
 				#skip first name line
 				if i>0:
-					tmplist=[('%s'%(col.text)).encode('utf8') for col in prod.find_all('td')]
+					tmplist=[('%s'%(col.text.replace(',','').strip())).encode('utf8') for col in prod.find_all('td')]
 					tmplist.append(ts)
 					tmplist.append(TODAY)
 					alldata.append(tmplist)
