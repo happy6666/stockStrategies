@@ -18,17 +18,23 @@ LOG_FILE_DALIAN='../log/${TODAY}_daliantongji.log'
 
 cd $DIR
 #echo $TODAY
+declare -i DOW
 
 for i in $(seq 1 $(( 365*6 )) )
 do
     TODAY=$(date --date="$i day ago" +'%Y%m%d')
-    echo $TODAY
-
-python jiaoyi_parameter.py $TODAY $DATA_FILE_JIAOYI 1>${LOG_FILE_JIAOYI} 2>${LOG_FILE_JIAOYI}
-python jiesuan_parameter.py $TODAY $DATA_FILE_JIESUAN 1>${LOG_FILE_JIESUAN} 2>${LOG_FILE_JIESUAN} 
-python huizongjiesuan_parameter.py $TODAY $DATA_FILE_HUIZONG_JIESUAN 1>${LOG_FILE_HUIZONG_JIESUAN} 2>${LOG_FILE_HUIZONG_JIESUAN} 
-python rijiaoyi_parameter.py $TODAY $DATA_FILE_RIJIAOYI 1>${LOG_FILE_RIJIAOYI} 2>${LOG_FILE_RIJIAOYI} 
-python yewu_parameter.py $TODAY $DATA_FILE_YEWU 1>${LOG_FILE_YEWU} 2>${LOG_FILE_YEWU} 
-python dalian_tongji_parameter.py $TODAY $DATA_FILE_DALIAN 1>${LOG_FILE_DALIAN} 2>${LOG_FILE_DALIAN} 
-
+    DOW=$(date --date="$i day ago" +'%u')
+    if [ $DOW -ge 1 ]
+    then
+        if [ $DOW -le 5 ]
+        then
+            echo $TODAY
+            python jiaoyi_parameter.py $TODAY $DATA_FILE_JIAOYI 1>${LOG_FILE_JIAOYI} 2>${LOG_FILE_JIAOYI}
+            python jiesuan_parameter.py $TODAY $DATA_FILE_JIESUAN 1>${LOG_FILE_JIESUAN} 2>${LOG_FILE_JIESUAN} 
+            python huizongjiesuan_parameter.py $TODAY $DATA_FILE_HUIZONG_JIESUAN 1>${LOG_FILE_HUIZONG_JIESUAN} 2>${LOG_FILE_HUIZONG_JIESUAN} 
+            python rijiaoyi_parameter.py $TODAY $DATA_FILE_RIJIAOYI 1>${LOG_FILE_RIJIAOYI} 2>${LOG_FILE_RIJIAOYI} 
+            python yewu_parameter.py $TODAY $DATA_FILE_YEWU 1>${LOG_FILE_YEWU} 2>${LOG_FILE_YEWU} 
+            python dalian_tongji_parameter.py $TODAY $DATA_FILE_DALIAN 1>${LOG_FILE_DALIAN} 2>${LOG_FILE_DALIAN} 
+        fi
+    fi
 done
