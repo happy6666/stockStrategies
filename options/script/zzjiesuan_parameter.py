@@ -13,12 +13,12 @@ def getDataOnDate(ts):
 	t=0;
 	alldata=[]
 	while True:
-		time.sleep(3)
+		time.sleep(1)
 		try:
 			if ts>=IMPORTANT:
 				req=urllib2.Request('http://www.czce.com.cn/portal/DFSStaticFiles/Future/%s/%s/FutureDataClearParams.htm'%(ts[:4],ts))
 				req.add_header('user-agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36')
-				url=urllib2.urlopen(req)
+				url=urllib2.urlopen(req,timeout=5)
 			else:
 				req=urllib2.Request('http://www.czce.com.cn/portal/exchange/%s/dataclearparams/%s.htm'%(ts[:4],ts))
 				req.add_header('user-agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36')
@@ -32,7 +32,7 @@ def getDataOnDate(ts):
 			for i,prod in enumerate(page):
 				#skip first name line
 				if i>0:
-					tmplist=[('%s'%(col.text)).encode('utf8') for col in prod.find_all('td')]
+					tmplist=[('%s'%(col.text)).encode('utf8').replace(',','') for col in prod.find_all('td')]
 					if len(tmplist)<2:
 						continue
 					if len(tmplist)<9:
@@ -52,6 +52,8 @@ def getDataOnDate(ts):
 		except Exception as e:
 			print 'Error on date:%s\n%s'%(ts,e)
 			t+=60
+			if t>70:
+				break
 			time.sleep(t)
 
 if __name__=='__main__':

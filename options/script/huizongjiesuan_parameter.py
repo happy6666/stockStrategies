@@ -39,8 +39,10 @@ def getDataOnDate(ts):
     t=0
     while True:
         try:
-            time.sleep(3)
-            url=urllib2.urlopen('http://www.shfe.com.cn/data/instrument/Settlement%s.dat'%ts)
+            time.sleep(1)
+            req=urllib2.Request('http://www.shfe.com.cn/data/instrument/Settlement%s.dat'%ts)
+            req.add_header('user-agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36')
+            url=urllib2.urlopen(req,timeout=5)
             data=url.read()
             js=json.loads(data,parse_float=None,parse_int=None)
             for ele in js[SETTLEMENT]:
@@ -54,6 +56,8 @@ def getDataOnDate(ts):
         except Exception as e:
             print 'Error when get data on date:%s\n%s'%(ts,e)
             t+=60
+            if t>70:
+                     break
             time.sleep(t)
     return alldata
 

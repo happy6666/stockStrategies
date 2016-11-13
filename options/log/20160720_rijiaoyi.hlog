@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "rijiaoyi_parameter.py", line 73, in <module>
+    alldata=getDataOnDate(sys.argv[1])
+  File "rijiaoyi_parameter.py", line 44, in getDataOnDate
+    time.sleep(3)
+KeyboardInterrupt

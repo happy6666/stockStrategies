@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "dalian_tongji_parameter.py", line 41, in <module>
+    alldata=getDataOnDate(sys.argv[1])
+  File "dalian_tongji_parameter.py", line 15, in getDataOnDate
+    time.sleep(3)
+KeyboardInterrupt

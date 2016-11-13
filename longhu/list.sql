@@ -1,0 +1,5 @@
+use quantum;
+select concat('"<tab>',tmp.code,'"') code,t2.name,t3.curr_price curr_price,bc,sc,diff,buy_amount as 'buy_amount(tens of thousands yuan)',sold_amount as 'sold_amount(tens of thousands yuan)',reason,tmp.p_date from (select tmp1.code,bc,sc,bc-sc diff,tmp1.p_date,tmp1.buy_amount+tmp2.buy_amount as buy_amount,tmp1.sold_amount+tmp2.sold_amount as sold_amount from 
+		(select code,flag,count(*) bc,sum(buy_amount) buy_amount,sum(sold_amount) sold_amount,p_date from longhu_detail where flag='0' and str_to_date('20160110','%Y%m%d')<=p_date group by code,p_date,flag) tmp1,
+		(select code,flag,count(*) sc,sum(buy_amount) buy_amount,sum(sold_amount) sold_amount,p_date from longhu_detail where flag='1' and str_to_date('20160110','%Y%m%d')<=p_date group by code,p_date,flag) tmp2 
+		where tmp1.code=tmp2.code and tmp1.p_date=tmp2.p_date) tmp join (select distinct code,name,reason,p_date from longhu_general) t2 on tmp.code=t2.code and tmp.p_date=t2.p_date join (select code,curr_price from prices) t3  on tmp.code=t3.code order by tmp.code,p_date desc,diff desc;

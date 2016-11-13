@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "jiesuan_parameter.py", line 67, in <module>
+    alldata=getDataOnDate(sys.argv[1])
+  File "jiesuan_parameter.py", line 44, in getDataOnDate
+    data=url.read()
+  File "/usr/lib/python2.7/socket.py", line 351, in read
+    data = self._sock.recv(rbufsize)
+  File "/usr/lib/python2.7/httplib.py", line 567, in read
+    s = self.fp.read(amt)
+  File "/usr/lib/python2.7/socket.py", line 380, in read
+    data = self._sock.recv(left)
+KeyboardInterrupt

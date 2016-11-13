@@ -1,0 +1,74 @@
+#!/usr/bin/python
+import os
+import sys
+import urllib2
+import bs4
+import time
+from bs4 import BeautifulSoup
+
+def getRawData(code):
+	url='http://data.10jqka.com.cn/financial/ggjy/op/code/code/%s/#refCountId=basic_50f3c967_150'%(code[2:].strip())
+	t=60
+	while True:
+		try:
+			response=urllib2.urlopen(url)
+			html=response.read()
+			soup=BeautifulSoup(html,from_encoding='gb18030')
+			if soup.body is not None:
+				return soup
+		except:
+			pass
+		time.sleep(t)
+		t+=60
+
+def parseDate(soup):
+	if soup.find('table',attrs={'class':'m-table J-ajax-table'}) is None:
+		return None
+	data=[]
+	for tr in soup.find('table',attrs={'class':'m-table J-ajax-table'}).tbody.find_all('tr'):
+		if type(tr) is bs4.element.Tag:
+			line=[]
+			for i,col in enumerate(tr.find_all('td')):
+				if not i==0:
+					if i==3 or i==4 or i==6 or i==7 or i==9:
+						if ''.join(col.stripped_strings).endswith(u'\u2030'):
+							line.append(str(float((''.join(col.stripped_strings))[:-1])/1000))
+						else:
+							try:
+								num=float(''.join(col.stripped_strings))
+								line.append(str(num))
+							except:
+								line.append('0')
+								pass
+					else:
+						line.append(''.join(col.stripped_strings))
+
+			data.append(line)
+	return data
+
+if __name__=='__main__':
+	if len(sys.argv)<2:
+		print 'Usage:COMMAND <output>'
+		sys.exit(1)
+
+	if os.path.exists(sys.argv[1]):
+		print '%s file exists'%sys.argv[1]
+		sys.exit(1)
+	
+	input=file('todo.list')
+	output=file(sys.argv[1],'w')
+	while True:
+		line=input.readline()	
+		if len(line)==0:
+			break
+		code=line[2:].strip()
+		print code
+		sys.stdout.flush()
+		time.sleep(3)
+		soup=getRawData(line)
+		result=parseDate(soup)
+		if result is not None:
+			for l in result:
+				output.write(code+'\001'+'\001'.join(l).encode('utf8','ignore')+'\n')
+				output.flush()
+	output.close()

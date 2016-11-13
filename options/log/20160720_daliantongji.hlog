@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "dalian_tongji_parameter.py", line 43, in <module>
+    alldata=getDataOnDate(sys.argv[1])
+  File "dalian_tongji_parameter.py", line 18, in getDataOnDate
+    data=url.read()
+  File "/usr/lib/python2.7/socket.py", line 351, in read
+    data = self._sock.recv(rbufsize)
+  File "/usr/lib/python2.7/httplib.py", line 543, in read
+    return self._read_chunked(amt)
+  File "/usr/lib/python2.7/httplib.py", line 607, in _read_chunked
+    value.append(self._safe_read(amt))
+  File "/usr/lib/python2.7/httplib.py", line 658, in _safe_read
+    chunk = self.fp.read(min(amt, MAXAMOUNT))
+  File "/usr/lib/python2.7/socket.py", line 380, in read
+    data = self._sock.recv(left)
+KeyboardInterrupt

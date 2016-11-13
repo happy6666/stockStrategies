@@ -1,0 +1,16 @@
+http://stat.10jqka.com.cn/q?id=qs_page&ld=browser&size=1366x768&nj=1&ref=http%3A%2F%2Fq.10jqka.com.cn%2Fstock%2F&url=http%3A%2F%2Fq.10jqka.com.cn%2Fstock%2Ffl%2F&cs=705x1789&ts=1478866509739
+http://q.10jqka.com.cn/interface/stock/fl/zdf/desc/1/hsa/quote
+Traceback (most recent call last):
+  File "dumpData.py", line 56, in <module>
+    js=json.loads(resp)
+  File "/usr/lib/python2.7/json/__init__.py", line 338, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python2.7/json/decoder.py", line 366, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python2.7/json/decoder.py", line 384, in raw_decode
+    raise ValueError("No JSON object could be decoded")
+ValueError: No JSON object could be decoded
+Warning: Using a password on the command line interface can be insecure.
+quantum.price: Records: 0  Deleted: 0  Skipped: 0  Warnings: 0
+Warning: Using a password on the command line interface can be insecure.
+quantum.prices: Records: 0  Deleted: 0  Skipped: 0  Warnings: 0

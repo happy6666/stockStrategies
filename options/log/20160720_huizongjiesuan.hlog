@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "huizongjiesuan_parameter.py", line 66, in <module>
+    alldata=getDataOnDate(sys.argv[1])
+  File "huizongjiesuan_parameter.py", line 42, in getDataOnDate
+    time.sleep(3)
+KeyboardInterrupt

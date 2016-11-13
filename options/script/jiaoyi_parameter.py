@@ -34,9 +34,11 @@ def getDataOnDate(time):
 	alldata=[]
 	t=0
 	while True:
-		ts.sleep(3)
+		ts.sleep(1)
 		try:
-			url=urllib2.urlopen('http://www.shfe.com.cn/data/instrument/ContractDailyTradeArgument%s.dat'%time)
+			req=urllib2.Request('http://www.shfe.com.cn/data/instrument/ContractDailyTradeArgument%s.dat'%time)
+			req.add_header('user-agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36')
+			url=urllib2.urlopen(req,timeout=5)
 			data=url.read()
 			js=json.loads(data)
 			if js.has_key(DAILY_TRADE_ARGUMENT):
@@ -53,6 +55,8 @@ def getDataOnDate(time):
 		except Exception,e:
 			print 'Other error on date:%s\n%s'%(time,e)
 			t+=60
+			if t>70:
+				break
 			ts.sleep(t)
 	return alldata
 

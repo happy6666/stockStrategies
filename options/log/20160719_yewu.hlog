@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "yewu_parameter.py", line 38, in <module>
+    alldata=getDataOnDate(sys.argv[1])
+  File "yewu_parameter.py", line 15, in getDataOnDate
+    time.sleep(3)
+KeyboardInterrupt
